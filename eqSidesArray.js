@@ -29,14 +29,33 @@ If you are given an array with multiple answers, return the lowest correct index
 https://www.codewars.com/kata/equal-sides-of-an-array
 
 */
-var result = function compareSides(lefSide.last, rightSide.first) {
-  if(lefSide.last > rightSide.first) {
-    return -1
+
+var arr = [-1,2,3,2,-1],
+    lefSideLast = 0,
+    indexTrough = 1,
+    endArr = (arr.length-1)
+
+var totalSum = (function(arrayNum){
+  var count = 0
+  for (var i = 0; i < arrayNum.length; i++) {
+    count = arrayNum[i] + count
+  }
+  return count
+})(arr)
+
+var sumLeft = arr[lefSideLast],
+    sumRight = totalSum - (sumLeft + arr[indexTrough])
+
+var result = (function compareSides(indexTrough, sumLeft, sumRight) {
+  if(indexTrough >= endArr) {
+    return -1;
   } else {
-    if (leftSide.soma == rightSide.soma){
-      return index
+    if (sumLeft == sumRight){
+      return indexTrough;
     } else {
-      return compareSides((leftSide.last+1),(rightSide.first-1))
+      return compareSides((indexTrough+1), (sumLeft+arr[indexTrough]), (sumRight-(arr[indexTrough+1])));
     }
   }
-}
+})(indexTrough, sumLeft, sumRight)
+
+console.log(result);
