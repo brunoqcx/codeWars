@@ -18,46 +18,37 @@ function zeros (n) {
   }
 
   var factorial = function() {
-    var knownsFacts = [720] //7!
+    var factorials = [2]
 
-
-
-    var calculateFact = function(n){
-      if (knownsFacts[n-8]) {
-        
+    var findOrFill = function(num){
+      if(num==2){return 2}
+      if (factorials[num]) {
+         return factorials[num]
+      } else {
+        factorials[num] = num*findOrFill(num-1)
       }
-      if(n==8){
-        var mult = (n * knownsFacts[0])
-        console.log(mult)
-        knownsFacts[1] = mult
-      }
+      return factorials[num]
     }
-
-    calculateFact(n)
-
-    return knownsFacts[n-7]
+    var log = findOrFill(n)
+    console.log(log);
   }
 
-  var trailZeros = function(prodOfFactorial) {
-
-  }
-
-  var discoverAndReturn = function() {
-    var num = 0
-    num = trailZeros(factorial())
+  var findTrailZeros = function(num) {
     return num
   }
-
 
   if(n <= 7){
     return basecase()
   } else {
-    console.log("maior q 8");
-    return factorial()
+    return findTrailZeros(factorial())
   }
 
 }
 
-console.log(zeros(7));
+console.log(zeros(20));
 
-console.log(zeros(8));
+console.log(zeros(0));
+
+console.log(zeros(-1));
+
+console.log(zeros(7));
