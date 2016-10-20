@@ -18,23 +18,43 @@ function zeros (n) {
   }
 
   var factorial = function() {
-    var factorials = [2]
+    var factorials = [1,1,2,6,24,120,720,5040]
 
     var findOrFill = function(num){
-      if(num==2){return 2}
       if (factorials[num]) {
          return factorials[num]
       } else {
+
         factorials[num] = num*findOrFill(num-1)
+
       }
       return factorials[num]
     }
     var log = findOrFill(n)
     console.log(log);
+    return log
   }
 
   var findTrailZeros = function(num) {
-    return num
+    var numStr = num.toString()
+    var enshorted = function(str) {
+      if (str.charAt(str.length-1)!="0") {
+          return str
+      } else {
+          var short = str.substring(0,str.length-1)
+          return enshorted(short)
+      }
+    }
+    var shorNumStr = enshorted(numStr)
+    var zeroCounter = 0
+
+    for (var i = 0; i < shorNumStr.length; i++) {
+      if (shorNumStr.charAt(i)==0) {
+        zeroCounter ++
+      }
+    }
+
+    return zeroCounter
   }
 
   if(n <= 7){
@@ -45,10 +65,7 @@ function zeros (n) {
 
 }
 
-console.log(zeros(20));
 
-console.log(zeros(0));
+//after 170 it breaks, factorial return infinity, got to work harder and understand BigNumber in Js
 
-console.log(zeros(-1));
-
-console.log(zeros(7));
+console.log(zeros(170));
