@@ -11,7 +11,7 @@ https://www.codewars.com/kata/number-of-trailing-zeros-of-n/train/javascript */
 function zeros (n) {
   var basecase = function() {
     var num = 0;
-    if (n==7) {
+    if (n===7) {
       num = 1
     }
     return num
@@ -38,7 +38,7 @@ function zeros (n) {
   var findTrailZeros = function(num) {
     var numStr = num.toString()
     var enshorted = function(str) {
-      if (str.charAt(str.length-1)!="0") {
+      if (str.charAt(str.length-1)!=="0") {
           return str
       } else {
           var short = str.substring(0,str.length-1)
@@ -49,7 +49,7 @@ function zeros (n) {
     var zeroCounter = 0
 
     for (var i = 0; i < shorNumStr.length; i++) {
-      if (shorNumStr.charAt(i)==0) {
+      if (shorNumStr.charAt(i)===0) {
         zeroCounter ++
       }
     }
