@@ -17,18 +17,18 @@ Example
 
   https://www.codewars.com/kata/554ca54ffa7d91b236000023
   */
+function(arr, x) {
+    var arr = arr
+    var n = x
+    var obj = {}
+    var newArr = []
 
-var arr =   [1,1,3,3,7,2,2,2,2]
-var n = 3
-var obj = {}
-var newArr = []
+    arr.forEach(function(item) {
+        obj[item] ? obj[item]++ : obj[item] = 1
+        if (obj[item] <= n) {
+            newArr = newArr.concat(item)
+        }
+    })
 
-arr.forEach(function(item){
-  obj[item]?obj[item]++ : obj[item] = 1
-  if(obj[item] <= n){
-    newArr = newArr.concat(item)
-  }
-})
-
-console.log(obj);
-console.log(newArr);
+    return newArr
+}
