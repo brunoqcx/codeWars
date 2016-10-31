@@ -18,92 +18,90 @@ https://www.codewars.com/kata/merged-string-checker/train/javascript
 */
 
 function isMerge(str, part1, part2) {
-  var str = Array.from(str)
-  var part1 = Array.from(part1)
-  var part2 = Array.from(part2)
-  var countRight = 0
-  var countLeft = 0
+    var str = Array.from(str)
+    var part1 = Array.from(part1)
+    var part2 = Array.from(part2)
+    var countRight = 0
+    var countLeft = 0
 
 
-  var tryRight = function(str, part1, part2){
-    console.log("chamei right com str=> "+str+" part1=> "+part1+" part2=> "+part2);
+    var tryRight = function(str, part1, part2) {
 
-    if (str.length === 0 && str.length === part1.length && str.length === part2.length) {
-      console.log("direita achei");
-      return true
-    }
+        if (str.length === 0 && str.length === part1.length && str.length === part2.length) {
 
-    if (str.length!==(part1.length+part2.length)) {
-      return false
-    }
+            return true
+        }
 
-    var newStr = str.slice(1, str.length)
-    var newPart1 = part1.slice(1, part1.length)
-    var newPart2 = part2.slice(1, part2.length)
+        if (str.length !== (part1.length + part2.length)) {
+            return false
+        }
 
+        var newStr = str.slice(1, str.length)
+        var newPart1 = part1.slice(1, part1.length)
+        var newPart2 = part2.slice(1, part2.length)
 
 
-    if (str[0]===part1[0] && str !== "") {
 
-        return  (tryRight(newStr, newPart1, part2) || tryLeft(newStr, newPart1, part2))
+        if (str[0] === part1[0] && str !== "") {
 
-    }
+            return (tryRight(newStr, newPart1, part2) || tryLeft(newStr, newPart1, part2))
 
-    if (str[0]===part2[0] && str !== "") {
+        }
 
-        return (tryLeft(newStr, part1, newPart2) || tryRight(newStr, part1, newPart2))
+        if (str[0] === part2[0] && str !== "") {
 
-    }
+            return (tryLeft(newStr, part1, newPart2) || tryRight(newStr, part1, newPart2))
 
-    return false
+        }
 
-  }
-
-  var tryLeft = function(str, part1, part2){
-
-    if (str.length === 0 && str.length === part1.length && str.length === part2.length) {
-      console.log("esquerda achei");
-      return true
+        return false
 
     }
 
-    if (str.length!==part1.length+part2.length) {
-      return false
+    var tryLeft = function(str, part1, part2) {
+
+        if (str.length === 0 && str.length === part1.length && str.length === part2.length) {
+
+            return true
+
+        }
+
+        if (str.length !== part1.length + part2.length) {
+            return false
+        }
+
+        var newStr = str.slice(1, str.length)
+        var newPart1 = part1.slice(1, part1.length)
+        var newPart2 = part2.slice(1, part2.length)
+
+
+        if (str[0] === part2[0] && str !== "") {
+
+            return (tryLeft(newStr, part1, newPart2) || tryRight(newStr, part1, newPart2))
+
+        }
+
+        if (str[0] === part1[0] && str !== "") {
+
+            return (tryRight(newStr, newPart1, part2) || tryLeft(newStr, newPart1, part2))
+
+        }
+
+        return false
     }
 
-    var newStr = str.slice(1, str.length)
-    var newPart1 = part1.slice(1, part1.length)
-    var newPart2 = part2.slice(1, part2.length)
+    var check = function(str, part1, part2) {
 
+        if (tryRight(str, part1, part2) || tryLeft(str, part1, part2)) {
+            return true
+        }
 
-    if (str[0]===part2[0] && str !== "") {
-
-        return (tryLeft(newStr, part1, newPart2) || tryRight(newStr, part1, newPart2))
-
-    }
-
-    if (str[0]===part1[0] && str !== "") {
-
-        console.log("ativei segunda chamada left");
-        return  (tryRight(newStr, newPart1, part2) || tryLeft(newStr, newPart1, part2))
+        return false
 
     }
-
-    return false
-  }
-
-  var check = function(str, part1, part2){
-
-      if (tryRight(str, part1, part2) || tryLeft(str, part1, part2)) {
-          return true
-      }
-
-      return false
-
-  }
-  var result = check(str, part1, part2)
-  //console.log(result);
-  return result
+    var result = check(str, part1, part2)
+        //console.log(result);
+    return result
 }
 //console.log(isMerge("Bananas from Bahamas", "Bahas", "Bananas from am"));
 console.log(isMerge("codewars", "code", "wasr"));
