@@ -14,7 +14,6 @@ https://www.codewars.com/kata/convert-string-to-camel-case/train/javascript
 
 
 function toCamelCase(str){
-  //should run on string if it finds "-" || "_" should eliminate [i], UpperCase[i+1] and continue on [i+2]
 
   var separator = function(str) {
     var tempArr = str.split("-")
