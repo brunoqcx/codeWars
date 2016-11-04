@@ -63,8 +63,3 @@ function humanReadable(sec) {
 
   return print(hours(minutes(seconds(sec))))
 }
-
-
-console.log(humanReadable(60));
-console.log(humanReadable(359999));
-console.log(humanReadable(5));
