@@ -30,7 +30,6 @@ function validBraces(braces){
         if (mapper[item] && mapper[item] == fakeStack[fakeStack.length-1]) {
             fakeStack.pop()
         } else {
-          //console.log("item= "+item);
           fakeStack.push(item)
         }
       })

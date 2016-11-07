@@ -37,6 +37,8 @@ http://www.codewars.com/kata/529bf0e9bdf7657179000008
 
 "use strict"
 function validSolution(board){
+
+  console.log(board);
   let mapper = {
     1 : [],
     2 : [],
@@ -57,27 +59,70 @@ function validSolution(board){
         mapper[i+1].push(item[i])
       })
       mapper[i+10] = board[i]
-      //console.log(tempArr);
 
     }
 
-    for (var i = 0; i < 9; i++) {
-      tempArr = mapper[i+1].sort()
-      tempArr2 = mapper[i+10].sort()
+    return mapper
+  }
 
-      mapper[i+1] = tempArr
-      mapper[i+10] = tempArr2
+  var quad = function(map){
+
+    var  eachQuad = function(x, y, mapper){
+      var i = x
+      var line = y
+      var mapper = mapper
+      var counterMapper = 0
+      var counterx= i
+
+      map[mapper] = []
+
+      for (var j = 0; j<3 ; j++) {
+        map[mapper][j] = map[line][counterx]
+        counterx++
+      }
+      counterx = i
+
+      for (var j = 3; j<6 ; j++) {
+        map[mapper][j] = map[line+1][counterx]
+        counterx++
+      }
+      counterx = i
+
+      for (var j = 6; j<9 ; j++) {
+        map[mapper][j] = map[line+2][counterx]
+        counterx++
+      }
     }
+
+    eachQuad(0, 1, 19)
+    eachQuad(3, 1, 20)
+    eachQuad(6, 1, 21)
+    eachQuad(0, 4, 22)
+    eachQuad(3, 4, 23)
+    eachQuad(6, 4, 24)
+    eachQuad(0, 7, 25)
+    eachQuad(3, 7, 26)
+    eachQuad(6, 7, 27)
 
 
     return mapper
   }
 
   let checker = function(map){
-
+    let tempArray = []
     let shouldBreak = false
     let lastItem = -1
-    for (var i = 1; i < 19; i++) {
+    for (var i = 1; i < 28; i++) {
+      console.log("i = "+i);
+      console.log(map[i]);
+      tempArray = map[i].sort()
+      map[i] = tempArray
+      console.log("==========");
+      console.log(map[i]);
+    }
+
+
+    for (var i = 1; i < 28; i++) {
       map[i].forEach(function(item){
         if (item == lastItem || !item) {
           shouldBreak = true
@@ -90,25 +135,36 @@ function validSolution(board){
     return !shouldBreak
   }
 
-  return checker(filler(board))
+  return checker(quad(filler(board)))
 }
 
-console.log(validSolution(([[5, 3, 4, 6, 7, 8, 9, 1, 2],
-               [6, 7, 2, 1, 9, 0, 3, 4, 8],
-               [1, 0, 0, 3, 4, 2, 5, 6, 0],
-               [8, 5, 9, 7, 6, 1, 0, 2, 0],
-               [4, 2, 6, 8, 5, 3, 7, 9, 1],
-               [7, 1, 3, 9, 2, 4, 8, 5, 6],
-               [9, 0, 1, 5, 3, 7, 2, 1, 4],
-               [2, 8, 7, 4, 1, 9, 6, 3, 5],
-               [3, 0, 0, 4, 8, 1, 1, 7, 9]])));
+// console.log(validSolution(([[5, 3, 4, 6, 7, 8, 9, 1, 2],
+//                [6, 7, 2, 1, 9, 0, 3, 4, 8],
+//                [1, 0, 0, 3, 4, 2, 5, 6, 0],
+//                [8, 5, 9, 7, 6, 1, 0, 2, 0],
+//                [4, 2, 6, 8, 5, 3, 7, 9, 1],
+//                [7, 1, 3, 9, 2, 4, 8, 5, 6],
+//                [9, 0, 1, 5, 3, 7, 2, 1, 4],
+//                [2, 8, 7, 4, 1, 9, 6, 3, 5],
+//                [3, 0, 0, 4, 8, 1, 1, 7, 9]])));
+//
+// console.log(validSolution([[5, 3, 4, 6, 7, 8, 9, 1, 2],
+//                [6, 7, 2, 1, 9, 5, 3, 4, 8],
+//                [1, 9, 8, 3, 4, 2, 5, 6, 7],
+//                [8, 5, 9, 7, 6, 1, 4, 2, 3],
+//                [4, 2, 6, 8, 5, 3, 7, 9, 1],
+//                [7, 1, 3, 9, 2, 4, 8, 5, 6],
+//                [9, 6, 1, 5, 3, 7, 2, 8, 4],
+//                [2, 8, 7, 4, 1, 9, 6, 3, 5],
+//                [3, 4, 5, 2, 8, 6, 1, 7, 9]]));
 
-console.log(validSolution([[5, 3, 4, 6, 7, 8, 9, 1, 2],
-               [6, 7, 2, 1, 9, 5, 3, 4, 8],
-               [1, 9, 8, 3, 4, 2, 5, 6, 7],
-               [8, 5, 9, 7, 6, 1, 4, 2, 3],
-               [4, 2, 6, 8, 5, 3, 7, 9, 1],
-               [7, 1, 3, 9, 2, 4, 8, 5, 6],
-               [9, 6, 1, 5, 3, 7, 2, 8, 4],
-               [2, 8, 7, 4, 1, 9, 6, 3, 5],
-               [3, 4, 5, 2, 8, 6, 1, 7, 9]]));
+
+    console.log(validSolution([ [ 1, 2, 3, 4, 5, 6, 7, 8, 9 ],
+                                [ 2, 3, 1, 5, 6, 4, 8, 9, 7 ],
+                                [ 3, 1, 2, 6, 4, 5, 9, 7, 8 ],
+                                [ 4, 5, 6, 7, 8, 9, 1, 2, 3 ],
+                                [ 5, 6, 4, 8, 9, 7, 2, 3, 1 ],
+                                [ 6, 4, 5, 9, 7, 8, 3, 1, 2 ],
+                                [ 7, 8, 9, 1, 2, 3, 4, 5, 6 ],
+                                [ 8, 9, 7, 2, 3, 1, 5, 6, 4 ],
+                                [ 9, 7, 8, 3, 1, 2, 6, 4, 5 ]]));
