@@ -25,12 +25,20 @@ https://www.codewars.com/kata/breadcrumb-generator/train/javascript
 */
 
 function generateBC(url, separator) {
+  console.log(url);
   var pathSep = separator
   var split = function(str){
     return str.split(".")
   }
   var urlToCrumb = function(arrStrings){
     var url = false
+
+    var anchors = {
+      "#" : "#",
+      "?" : "?",
+      "&" : "&"
+    }
+
     var comChecker = function(item){
       if (item.slice(0,3)=="com") {
         return true
@@ -63,14 +71,14 @@ function generateBC(url, separator) {
     arrStrings.forEach(function(item){
       if (comChecker(item)) {
         url = item.slice(4)
-        if(item.slice(3,4) == "#"){
+        if(item.slice(3,4) in anchors){
           url = ""
         }
       }
 
       if (otherDomainsChecker(item)) {
         url = item.slice(3)
-        if(item.slice(2,3) == "#"){
+        if(item.slice(2,3) in anchors){
           url = ""
         }
       }
@@ -89,10 +97,73 @@ function generateBC(url, separator) {
 
   var simplifier = function(arrStrings){
     var newArr = []
+
+    var anchorIgnorer = function(str){
+      var breaker = false
+      var finalStr = ""
+      var anchors = {
+        "#" : "#",
+        "?" : "?",
+        "&" : "&"
+      }
+      for (var i = 0; i < str.length; i++) {
+        if(!(str.charAt(i) in anchors) && !breaker){
+          finalStr = finalStr+str.charAt(i)
+        } else {
+          breaker = true
+        }
+      }
+      return finalStr
+    }
+
+    var spacerOrAcronomizer = function(str){
+      var tempArr = str.split("-")
+      if(str.length <= 30){
+        return spacer(tempArr)
+      } else {
+        return acronomizer (tempArr)
+      }
+    }
+
+    var spacer = function(arrStr) {
+      finalStr = ""
+      arrStr.forEach(function(item){
+        finalStr = finalStr + " " + item
+      })
+
+      return finalStr.trim()
+    }
+
+    var acronomizer = function(arrStr){
+      var connectors = {
+        "the"  : "the",
+        "of"   : "of",
+        "in"   : "in",
+        "from" : "from",
+        "by"   : "by",
+        "with" : "with",
+        "and"  : "and",
+        "or"   : "or",
+        "for"  : "for",
+        "to"   : "to",
+        "at"   : "at",
+        "a"    : "a"
+      }
+
+      finalStr = ""
+      arrStr.forEach(function(item){
+        if(!(item.toLowerCase() in connectors)){
+          finalStr = finalStr + item[0]
+        }
+      })
+
+      return finalStr
+    }
+
     var composedObj = function(item){
       return {
         path : item,
-        showName : item.toUpperCase()//aplicar a regex
+        showName : spacerOrAcronomizer(anchorIgnorer(item.toUpperCase()))
       }
     }
     arrStrings.forEach(function(item){
@@ -104,26 +175,33 @@ function generateBC(url, separator) {
 
   var finalBreadCrumb = function(arrSimplePaths){
     var formedBreadCrumb =  ""
-    var lastPaths = ""
+    var lastPaths = ["", ""]
 
     var aHrefer = function(pathObj) {
-      lastPaths = (lastPaths == "" ? lastPaths : lastPaths + "/" + pathObj.path)
-      return ("<a href=" + "\"" + "/" + lastPaths + pathObj.path + "/" + "\"" + ">" + pathObj.showName + "</a>")
+
+      lastPaths[0] = (lastPaths[1] != "" ? lastPaths[0]+ "/" + lastPaths[1] : "")
+      lastPaths[1] = pathObj.path
+      console.log(lastPaths);
+      return ("<a href=" + "\"" + lastPaths[0] + "/" + pathObj.path + "/" + "\"" + ">" + pathObj.showName + "</a>")
     }
 
     var spanner = function(pathObj){
       return "<span class=\"active\"" + ">" + pathObj.showName + "</span>"
     }
-
-    if (arrSimplePaths[0].path != "") {
-      formedBreadCrumb = "<a href=" + "\"" + "/" + "\"" + ">HOME</a>" + pathSep
-      for (var i = 0; i < arrSimplePaths.length-1; i++) {
-        formedBreadCrumb = formedBreadCrumb + aHrefer(arrSimplePaths[i]) + pathSep
-      }
-
-      formedBreadCrumb = formedBreadCrumb+spanner(arrSimplePaths[arrSimplePaths.length-1])
-    } else {
+    console.log(arrSimplePaths);
+    if (arrSimplePaths.length===0) {
       formedBreadCrumb = "<span class=\"active\"" + ">HOME</span>"
+    } else {
+      if (arrSimplePaths[0].path != "") {
+        formedBreadCrumb = "<a href=" + "\"" + "/" + "\"" + ">HOME</a>" + pathSep
+        for (var i = 0; i < arrSimplePaths.length-1; i++) {
+          formedBreadCrumb = formedBreadCrumb + aHrefer(arrSimplePaths[i]) + pathSep
+        }
+
+        formedBreadCrumb = formedBreadCrumb+spanner(arrSimplePaths[arrSimplePaths.length-1])
+      } else {
+        formedBreadCrumb = "<span class=\"active\"" + ">HOME</span>"
+      }
     }
 
     return formedBreadCrumb
@@ -132,4 +210,4 @@ function generateBC(url, separator) {
   return finalBreadCrumb(simplifier(splitInner(urlToCrumb(split(url)))));
 }
 
-console.log(generateBC('codewars.com/wanted/wanted/from-bed-meningitis-with-bladder-eurasian', ' * '));
+console.log(generateBC('http://www.github.com/index.htm#top', ' : '));
